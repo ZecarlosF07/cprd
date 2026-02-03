@@ -60,6 +60,8 @@ export async function createSolicitud(
     userId: string,
     solicitudData: CreateSolicitudData
 ): Promise<SolicitudResponse> {
+    console.log('createSolicitud - Intentando crear con:', { userId, solicitudData })
+    
     const { data, error } = await supabase
         .from('solicitudes')
         .insert({
@@ -73,6 +75,17 @@ export async function createSolicitud(
         })
         .select()
         .single()
+
+    if (error) {
+        console.error('createSolicitud - Error de Supabase:', {
+            message: error.message,
+            code: error.code,
+            details: error.details,
+            hint: error.hint,
+        })
+    } else {
+        console.log('createSolicitud - Éxito:', data)
+    }
 
     return {
         data: data as Solicitud | null,
