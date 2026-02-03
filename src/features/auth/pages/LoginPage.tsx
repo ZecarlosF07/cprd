@@ -10,7 +10,7 @@ import { useAuthStore } from '@/store'
 import { ROUTES } from '@/utils/constants'
 
 export function LoginPage() {
-    const { login, isLoading, error, clearError, isAuthenticated, profile } = useAuthStore()
+    const { login, isLoading, error, clearError, isAuthenticated, profile, profileChecked } = useAuthStore()
     const navigate = useNavigate()
 
     const {
@@ -22,35 +22,31 @@ export function LoginPage() {
     })
 
     useEffect(() => {
-        if (isAuthenticated) {
-            redirectByRole()
+        if (!isAuthenticated || isLoading || !profileChecked) {
+            return
         }
-    }, [isAuthenticated, profile])
 
-    const redirectByRole = () => {
         if (!profile) {
-            navigate(ROUTES.PROFILE)
+            navigate(ROUTES.PROFILE, { replace: true })
             return
         }
 
         switch (profile.rol) {
             case 'administrador':
-                navigate(ROUTES.DASHBOARD_ADMIN)
+                navigate(ROUTES.DASHBOARD_ADMIN, { replace: true })
                 break
             case 'interno':
-                navigate(ROUTES.DASHBOARD_INTERNO)
+                navigate(ROUTES.DASHBOARD_INTERNO, { replace: true })
                 break
             default:
-                navigate(ROUTES.DASHBOARD_EXTERNO)
+                navigate(ROUTES.DASHBOARD_EXTERNO, { replace: true })
         }
-    }
+    }, [isAuthenticated, isLoading, profile, profileChecked, navigate])
 
     const onSubmit = async (data: LoginFormData) => {
         clearError()
-        const success = await login(data)
-        if (success) {
-            redirectByRole()
-        }
+        await login(data)
+        // La redirección se maneja en el useEffect cuando isAuthenticated y profile cambien
     }
 
     return (

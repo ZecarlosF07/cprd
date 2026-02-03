@@ -26,6 +26,7 @@ interface AuthStore {
     profile: Profile | null
     isLoading: boolean
     isAuthenticated: boolean
+    profileChecked: boolean
     error: string | null
     initialize: () => Promise<void>
     login: (credentials: LoginCredentials) => Promise<boolean>
@@ -50,6 +51,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     profile: null,
     isLoading: true,
     isAuthenticated: false,
+    profileChecked: false,
     error: null,
 
     initialize: async () => {
@@ -64,6 +66,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
                 user,
                 profile,
                 isAuthenticated: true,
+                profileChecked: true,
                 isLoading: false,
             })
         } else {
@@ -71,6 +74,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
                 user: null,
                 profile: null,
                 isAuthenticated: false,
+                profileChecked: true,
                 isLoading: false,
             })
         }
@@ -79,9 +83,9 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
             const user = mapSupabaseUser(supabaseUser)
             if (user) {
                 const { data: profile } = await getProfile(user.id)
-                set({ user, profile, isAuthenticated: true })
+                set({ user, profile, isAuthenticated: true, profileChecked: true })
             } else {
-                set({ user: null, profile: null, isAuthenticated: false })
+                set({ user: null, profile: null, isAuthenticated: false, profileChecked: true })
             }
         })
     },
@@ -104,6 +108,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
                 user,
                 profile,
                 isAuthenticated: true,
+                profileChecked: true,
                 isLoading: false,
             })
             return true

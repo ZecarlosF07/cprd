@@ -50,7 +50,7 @@ export function ExternalDashboardPage() {
                         <h2 className="text-lg font-medium text-neutral-900">
                             Solicitudes recientes
                         </h2>
-                        <Button variant="primary" size="sm">
+                        <Button variant="primary" size="sm" onClick={() => (window.location.href = '/solicitudes/nueva')}>
                             Nueva solicitud
                         </Button>
                     </div>

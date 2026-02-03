@@ -5,6 +5,7 @@ import { AdminDashboardPage } from '@/features/admin/pages'
 import { LoginPage, ProfilePage, RegisterPage } from '@/features/auth/pages'
 import { ExternalDashboardPage } from '@/features/external/pages'
 import { InternalDashboardPage } from '@/features/internal/pages'
+import { NewSolicitudPage, SolicitudDetailPage } from '@/features/solicitudes/pages'
 import { ROUTES } from '@/utils/constants'
 
 export function AppRouter() {
@@ -33,6 +34,26 @@ export function AppRouter() {
                         <ProfileRequiredRoute>
                             <RoleRoute allowedRoles={['externo']}>
                                 <ExternalDashboardPage />
+                            </RoleRoute>
+                        </ProfileRequiredRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.NUEVA_SOLICITUD}
+                    element={
+                        <ProfileRequiredRoute>
+                            <RoleRoute allowedRoles={['externo']}>
+                                <NewSolicitudPage />
+                            </RoleRoute>
+                        </ProfileRequiredRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.DETALLE_SOLICITUD}
+                    element={
+                        <ProfileRequiredRoute>
+                            <RoleRoute allowedRoles={['externo']}>
+                                <SolicitudDetailPage />
                             </RoleRoute>
                         </ProfileRequiredRoute>
                     }

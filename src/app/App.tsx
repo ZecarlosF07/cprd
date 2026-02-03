@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Toaster } from 'sonner'
 
 import { AppRouter } from '@/app/router'
 import { Loader } from '@/components/ui'
@@ -15,5 +16,10 @@ export function App() {
         return <Loader />
     }
 
-    return <AppRouter />
+    return (
+        <>
+            <AppRouter />
+            <Toaster position="top-center" richColors />
+        </>
+    )
 }
