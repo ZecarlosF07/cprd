@@ -375,7 +375,7 @@ export function NewSolicitudPage() {
 
                                 <div className="bg-neutral-50 p-4 rounded-md border border-neutral-100">
                                     <ul className="list-disc list-inside space-y-1 ml-2">
-                                        <li><span className="font-medium">Titular:</span> Cámara de Comercio de Ica</li>
+                                        <li><span className="font-medium">Titular:</span> CAMARA DE COMERCIO INDUSTRIA Y TURISMO DE ICA</li>
                                         <li><span className="font-medium">INTERBANK CTA. CTE.:</span> 400-2600696439, ó CCI: 003-400-002600696439-94</li>
                                         <li><span className="font-medium">CONTINENTAL CTA.:</span> 0011-0203-0100002047 ó CCI: 011-203-000100002047-77</li>
                                         <li><span className="font-medium">BCP:</span> 380-7000415044 o CCI: 00238000700041504440</li>
