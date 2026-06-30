@@ -35,10 +35,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                                 Usuarios
                             </Link>
                             <Link
-                                to={`${ROUTES.DASHBOARD_ADMIN}/configuracion`}
+                                to={ROUTES.PROFILE}
                                 className="text-neutral-300 hover:text-white text-sm font-medium"
                             >
-                                Configuración
+                                Mi perfil
                             </Link>
                         </nav>
 

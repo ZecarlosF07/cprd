@@ -11,9 +11,9 @@ interface ProfileRequiredRouteProps {
 }
 
 export function ProfileRequiredRoute({ children }: ProfileRequiredRouteProps) {
-    const { isAuthenticated, isLoading, profile } = useAuthStore()
+    const { isAuthenticated, profileChecked, profile } = useAuthStore()
 
-    if (isLoading) {
+    if (!profileChecked) {
         return <Loader />
     }
 

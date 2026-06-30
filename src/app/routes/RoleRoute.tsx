@@ -6,6 +6,7 @@ import { Loader } from '@/components/ui'
 import { useAuthStore } from '@/store'
 import type { RolUsuario } from '@/types'
 import { ROUTES } from '@/utils/constants'
+import { getDashboardRoute } from '@/utils/route.utils'
 
 interface RoleRouteProps {
     children: ReactNode
@@ -13,9 +14,9 @@ interface RoleRouteProps {
 }
 
 export function RoleRoute({ children, allowedRoles }: RoleRouteProps) {
-    const { isAuthenticated, isLoading, profile } = useAuthStore()
+    const { isAuthenticated, profileChecked, profile } = useAuthStore()
 
-    if (isLoading) {
+    if (!profileChecked) {
         return <Loader />
     }
 
@@ -28,20 +29,8 @@ export function RoleRoute({ children, allowedRoles }: RoleRouteProps) {
     }
 
     if (!allowedRoles.includes(profile.rol)) {
-        const redirectRoute = getDefaultRouteForRole(profile.rol)
-        return <Navigate to={redirectRoute} replace />
+        return <Navigate to={getDashboardRoute(profile.rol)} replace />
     }
 
     return <>{children}</>
-}
-
-function getDefaultRouteForRole(rol: RolUsuario): string {
-    switch (rol) {
-        case 'administrador':
-            return ROUTES.DASHBOARD_ADMIN
-        case 'interno':
-            return ROUTES.DASHBOARD_INTERNO
-        default:
-            return ROUTES.DASHBOARD_EXTERNO
-    }
 }

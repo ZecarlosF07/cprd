@@ -3,15 +3,15 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
-import { ExternalLayout } from '@/components/layout'
+import { AdminLayout, ExternalLayout, InternalLayout } from '@/components/layout'
 import { Button, Input, Select } from '@/components/ui'
 import { profileSchema, type ProfileFormDataSchema } from '@/features/auth/schemas'
 import { useAuthStore } from '@/store'
 import {
-    ROUTES,
     TIPOS_DOCUMENTO_OPTIONS,
     TIPOS_PERSONA_OPTIONS,
 } from '@/utils/constants'
+import { getDashboardRoute } from '@/utils/route.utils'
 
 export function ProfilePage() {
     const { profile, createUserProfile, updateUserProfile, isLoading, error, clearError } = useAuthStore()
@@ -59,7 +59,7 @@ export function ProfilePage() {
         }
 
         if (success) {
-            navigate(ROUTES.DASHBOARD_EXTERNO)
+            navigate(getDashboardRoute(profile?.rol ?? 'externo'), { replace: true })
         }
     }
 
@@ -159,7 +159,14 @@ export function ProfilePage() {
     )
 
     if (isEditing) {
-        return <ExternalLayout>{formContent}</ExternalLayout>
+        switch (profile.rol) {
+            case 'administrador':
+                return <AdminLayout>{formContent}</AdminLayout>
+            case 'interno':
+                return <InternalLayout>{formContent}</InternalLayout>
+            default:
+                return <ExternalLayout>{formContent}</ExternalLayout>
+        }
     }
 
     return (

@@ -11,9 +11,9 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-    const { isAuthenticated, isLoading } = useAuthStore()
+    const { isAuthenticated, profileChecked } = useAuthStore()
 
-    if (isLoading) {
+    if (!profileChecked) {
         return <Loader />
     }
 

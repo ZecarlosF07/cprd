@@ -62,7 +62,7 @@ export async function getProfile(userId: string): Promise<ProfileResponse> {
         .select('*')
         .eq('user_id', userId)
         .is('deleted_at', null)
-        .single()
+        .maybeSingle()
 
     return {
         data: data as Profile | null,

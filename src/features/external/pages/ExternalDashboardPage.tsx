@@ -1,13 +1,15 @@
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { ExternalLayout } from '@/components/layout'
 import { Button } from '@/components/ui'
 import { useAuthStore, useSolicitudStore } from '@/store'
+import { ROUTES } from '@/utils/constants'
 import { formatDate } from '@/utils/date.utils'
 import { getEstadoDisplay } from '@/utils/estado.utils'
 
 export function ExternalDashboardPage() {
+    const navigate = useNavigate()
     const { profile, user } = useAuthStore()
     const { solicitudes, stats, isLoading, fetchSolicitudes, fetchStats } = useSolicitudStore()
 
@@ -64,7 +66,11 @@ export function ExternalDashboardPage() {
                         <h2 className="text-lg font-medium text-neutral-900">
                             Solicitudes recientes
                         </h2>
-                        <Button variant="primary" size="sm" onClick={() => (window.location.href = '/solicitudes/nueva')}>
+                        <Button
+                            variant="primary"
+                            size="sm"
+                            onClick={() => navigate(ROUTES.NUEVA_SOLICITUD)}
+                        >
                             Nueva solicitud
                         </Button>
                     </div>

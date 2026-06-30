@@ -36,6 +36,12 @@ export function InternalLayout({ children }: InternalLayoutProps) {
                             >
                                 Bandeja de Solicitudes
                             </Link>
+                            <Link
+                                to={ROUTES.PROFILE}
+                                className="text-neutral-300 hover:text-white text-sm font-medium"
+                            >
+                                Mi perfil
+                            </Link>
                         </nav>
 
                         <div className="flex items-center gap-4">

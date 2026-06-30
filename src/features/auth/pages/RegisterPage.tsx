@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -7,9 +8,17 @@ import { Button, Input } from '@/components/ui'
 import { registerSchema, type RegisterFormData } from '@/features/auth/schemas'
 import { useAuthStore } from '@/store'
 import { ROUTES } from '@/utils/constants'
+import { getDashboardRoute } from '@/utils/route.utils'
 
 export function RegisterPage() {
-    const { register: registerUser, isLoading, error, clearError } = useAuthStore()
+    const {
+        register: registerUser,
+        isLoading,
+        error,
+        clearError,
+        isAuthenticated,
+        profile,
+    } = useAuthStore()
     const navigate = useNavigate()
 
     const {
@@ -20,11 +29,32 @@ export function RegisterPage() {
         resolver: zodResolver(registerSchema),
     })
 
+    useEffect(() => {
+        if (!isAuthenticated) return
+
+        navigate(profile ? getDashboardRoute(profile.rol) : ROUTES.PROFILE, {
+            replace: true,
+        })
+    }, [isAuthenticated, navigate, profile])
+
     const onSubmit = async (data: RegisterFormData) => {
         clearError()
-        const success = await registerUser(data)
-        if (success) {
+        const result = await registerUser(data)
+
+        if (result === 'authenticated') {
             navigate(ROUTES.PROFILE)
+            return
+        }
+
+        if (result === 'confirmation_required') {
+            navigate(ROUTES.LOGIN, {
+                replace: true,
+                state: {
+                    registrationMessage:
+                        'Cuenta creada. Revise su correo para confirmar la cuenta y luego inicie sesión.',
+                    email: data.email,
+                },
+            })
         }
     }
 
