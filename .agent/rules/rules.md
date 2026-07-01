@@ -30,4 +30,4 @@ trigger: always_on
 - Refactoriza código duplicado inmediatamente cuando lo detectes
 - Escribe código autodocumentado con nombres claros antes que comentarios extensos
 - La UI debe ser minimalista. Nada de agregar muchos colores.
-- Las migraciones de supabase se crean en la carpeta supabase para ejecutarlas con el CLI
+- Los cambios de base de datos se crean como scripts versionados en `supabase/manual_sql/` y se ejecutan manualmente desde SQL Editor; no usar Supabase CLI para migraciones. Las Edge Functions sí pueden desplegarse con Supabase CLI después de aprobación explícita.

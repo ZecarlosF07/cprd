@@ -18,7 +18,7 @@ export function ProfileRequiredRoute({ children }: ProfileRequiredRouteProps) {
     }
 
     if (!isAuthenticated) {
-        return <Navigate to={ROUTES.LOGIN} replace />
+        return <Navigate to={ROUTES.ADMIN_LOGIN} replace />
     }
 
     if (!profile) {

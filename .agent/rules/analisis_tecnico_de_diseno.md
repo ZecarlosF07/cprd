@@ -1,5 +1,7 @@
 # Análisis Técnico de Diseño de la Aplicación
 
+> **Nota de vigencia:** El [Hito 6](../../docs/hito_6_adecuacion_mesa_partes_publica.md) agrega Edge Functions como frontera segura para recepción pública y trazabilidad limitada por código en `/trazabilidad`. El acceso directo del frontend a Supabase se mantiene para los flujos autenticados existentes, pero no para escrituras públicas con privilegios. La gestión del Hito 6 queda limitada al rol `administrador`; no hay subsanación pública.
+
 ## Sistema Institucional de Mesa de Partes Virtual
 
 ### Procedimientos de Arbitraje, Arbitraje de Emergencia y JPRD

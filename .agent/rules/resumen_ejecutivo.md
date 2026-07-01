@@ -1,5 +1,7 @@
 # Resumen Ejecutivo del Proyecto
 
+> **Nota de vigencia:** El [Hito 6](../../docs/hito_6_adecuacion_mesa_partes_publica.md) reemplaza para nuevas presentaciones la autenticación obligatoria del solicitante, las tres secciones principales, el pago obligatorio universal y la subsanación pública. Este documento conserva el alcance original como antecedente.
+
 ## Mesa de Partes Virtual para Procedimientos de Arbitraje y JPRD
 
 ### 1. Contexto y propósito
@@ -86,4 +88,3 @@ Estos elementos podrán ser evaluados e incorporados en fases posteriores, una v
 ---
 
 Este resumen ejecutivo proporciona una **visión global y alineada del sistema institucional**, sirviendo como base para el desarrollo del análisis funcional detallado y el posterior diseño técnico.
-

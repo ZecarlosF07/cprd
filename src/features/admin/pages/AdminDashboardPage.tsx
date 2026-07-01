@@ -1,59 +1,72 @@
+import { useEffect, useState } from 'react'
+
 import { AdminLayout } from '@/components/layout'
-import { Button } from '@/components/ui'
+import { Loader } from '@/components/ui'
+import { AdminSolicitudPanel, AdminSolicitudesTable } from '@/features/admin/components'
+import type { AdminSolicitud } from '@/features/admin/types/admin-solicitud.types'
+import { actualizarEstadoSolicitud, agregarObservacionSolicitud, listSolicitudesPublicas } from '@/services'
+import type { EstadoSolicitud } from '@/types'
 
 export function AdminDashboardPage() {
+    const [solicitudes, setSolicitudes] = useState<AdminSolicitud[]>([])
+    const [selected, setSelected] = useState<AdminSolicitud | undefined>()
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
+
+    const loadSolicitudes = async () => {
+        setError(null)
+        try {
+            const data = await listSolicitudesPublicas()
+            setSolicitudes(data)
+            setSelected((current) => data.find((item) => item.id === current?.id) ?? data[0])
+        } catch (requestError) {
+            setError(requestError instanceof Error ? requestError.message : 'No se pudieron cargar las solicitudes')
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        void loadSolicitudes()
+    }, [])
+
+    const handleEstadoChange = async (estado: EstadoSolicitud) => {
+        if (!selected) return
+        await actualizarEstadoSolicitud(selected.id, estado)
+        await loadSolicitudes()
+    }
+
+    const handleObservacion = async (mensaje: string, visibilidad: 'publica' | 'interna') => {
+        if (!selected) return
+        await agregarObservacionSolicitud(selected.id, mensaje, visibilidad)
+        await loadSolicitudes()
+    }
+
     return (
         <AdminLayout>
             <div className="space-y-6">
-                <div>
-                    <h1 className="text-2xl font-semibold text-neutral-900">
-                        Gestión de Usuarios
+                <div className="rounded-lg bg-[#0c211c] px-6 py-5 text-white">
+                    <p className="mb-1 text-sm font-semibold uppercase text-[#b6eb66]">Administración CPRD</p>
+                    <h1 className="text-2xl font-semibold">
+                        Solicitudes recibidas
                     </h1>
-                    <p className="text-neutral-600 mt-1">
-                        Administre los usuarios del sistema
+                    <p className="mt-1 text-[#dce8e2]">
+                        Revise documentos presentados por mesa de partes pública
                     </p>
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="bg-white p-6 rounded-xl border border-neutral-200">
-                        <h3 className="text-sm font-medium text-neutral-500 mb-1">
-                            Usuarios Externos
-                        </h3>
-                        <p className="text-2xl font-bold text-neutral-900">0</p>
+                {isLoading && <Loader />}
+                {error && <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">{error}</div>}
+                {!isLoading && !error && solicitudes.length > 0 && (
+                    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+                        <AdminSolicitudesTable solicitudes={solicitudes} selectedId={selected?.id} onSelect={setSelected} />
+                        <AdminSolicitudPanel solicitud={selected} onEstadoChange={handleEstadoChange} onObservacion={handleObservacion} />
                     </div>
-
-                    <div className="bg-white p-6 rounded-xl border border-neutral-200">
-                        <h3 className="text-sm font-medium text-neutral-500 mb-1">
-                            Usuarios Internos
-                        </h3>
-                        <p className="text-2xl font-bold text-neutral-900">0</p>
+                )}
+                {!isLoading && !error && solicitudes.length === 0 && (
+                    <div className="rounded-lg border border-[#c1d0c7] bg-white p-8 text-center text-neutral-500">
+                        No hay solicitudes públicas registradas.
                     </div>
-
-                    <div className="bg-white p-6 rounded-xl border border-neutral-200">
-                        <h3 className="text-sm font-medium text-neutral-500 mb-1">
-                            Administradores
-                        </h3>
-                        <p className="text-2xl font-bold text-neutral-900">1</p>
-                    </div>
-                </div>
-
-                <div className="bg-white rounded-xl border border-neutral-200">
-                    <div className="p-6 border-b border-neutral-200 flex items-center justify-between">
-                        <h2 className="text-lg font-medium text-neutral-900">
-                            Usuarios Internos
-                        </h2>
-                        <Button size="sm">
-                            Crear usuario interno
-                        </Button>
-                    </div>
-
-                    <div className="text-center py-12 text-neutral-500">
-                        <p>No hay usuarios internos registrados</p>
-                        <p className="text-sm mt-1">
-                            Cree un nuevo usuario interno para la gestión de solicitudes
-                        </p>
-                    </div>
-                </div>
+                )}
             </div>
         </AdminLayout>
     )

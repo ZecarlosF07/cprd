@@ -15,38 +15,39 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
     const handleLogout = async () => {
         await logout()
-        navigate(ROUTES.LOGIN)
+        navigate(ROUTES.ADMIN_LOGIN)
     }
 
     return (
-        <div className="min-h-screen bg-neutral-50">
-            <header className="bg-neutral-800 text-white">
+        <div className="min-h-screen bg-[#f3f6f3]">
+            <div className="h-2 bg-[#b6eb66]" />
+            <header className="border-b border-[#b8ccc2] bg-[#dfeae4]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center h-16">
+                    <div className="flex min-h-20 flex-wrap items-center justify-between gap-4 py-3">
                         <Link to={ROUTES.DASHBOARD_ADMIN} className="flex items-center">
-                            <h1 className="text-xl font-bold">CPRD - Administración</h1>
+                            <img src="/brand/cprd-cobranding-full-color.png" alt="CCI CPRD" className="h-auto w-72 max-w-[72vw]" />
                         </Link>
 
                         <nav className="flex items-center gap-6">
                             <Link
                                 to={ROUTES.DASHBOARD_ADMIN}
-                                className="text-neutral-300 hover:text-white text-sm font-medium"
+                                className="rounded-md bg-[#0c211c] px-3 py-2 text-sm font-semibold text-white"
                             >
-                                Usuarios
+                                Solicitudes
                             </Link>
                             <Link
                                 to={ROUTES.PROFILE}
-                                className="text-neutral-300 hover:text-white text-sm font-medium"
+                                className="rounded-md px-3 py-2 text-sm font-semibold text-[#0c211c] hover:bg-[#b6eb66]"
                             >
                                 Mi perfil
                             </Link>
                         </nav>
 
                         <div className="flex items-center gap-4">
-                            <span className="text-sm text-neutral-300">{user?.email}</span>
+                            <span className="hidden text-sm text-neutral-500 lg:inline">{user?.email}</span>
                             <button
                                 onClick={handleLogout}
-                                className="text-sm text-neutral-400 hover:text-white"
+                                className="text-sm font-medium text-[#8b3030] hover:text-[#671f1f]"
                             >
                                 Cerrar sesión
                             </button>

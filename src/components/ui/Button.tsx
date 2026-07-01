@@ -9,9 +9,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const VARIANT_CLASSES = {
-    primary: 'bg-neutral-900 text-white hover:bg-neutral-800 disabled:bg-neutral-400',
-    secondary: 'bg-neutral-100 text-neutral-900 hover:bg-neutral-200 disabled:bg-neutral-50',
-    outline: 'border border-neutral-300 text-neutral-900 hover:bg-neutral-50 disabled:opacity-50',
+    primary: 'bg-[#2a7221] text-white hover:bg-[#1f5c18] disabled:bg-neutral-400',
+    secondary: 'bg-[#dff3bf] text-[#0c211c] hover:bg-[#cbed99] disabled:bg-neutral-50',
+    outline: 'border border-[#2a7221] bg-white text-[#1f5c18] hover:bg-[#eef8df] disabled:opacity-50',
 } as const
 
 const SIZE_CLASSES = {
@@ -30,7 +30,7 @@ export function Button({
     disabled,
     ...props
 }: ButtonProps) {
-    const baseClasses = 'font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 disabled:cursor-not-allowed'
+    const baseClasses = 'font-semibold rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#b6eb66] focus:ring-offset-2 disabled:cursor-not-allowed'
     const variantClasses = VARIANT_CLASSES[variant]
     const sizeClasses = SIZE_CLASSES[size]
     const widthClasses = fullWidth ? 'w-full' : ''
@@ -43,7 +43,7 @@ export function Button({
         >
             {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
-                    <svg className="animate-spin h-4 w-4\" viewBox="0 0 24 24">
+                    <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24">
                         <circle
                             className="opacity-25"
                             cx="12"

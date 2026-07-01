@@ -3,6 +3,7 @@ export type TipoSolicitud = 'arbitraje' | 'arbitraje_emergencia' | 'jprd'
 
 // Estados de solicitud
 export type EstadoSolicitud =
+    | 'borrador'
     | 'recibida'
     | 'en_revision'
     | 'observada'
@@ -28,14 +29,20 @@ export type TipoAccion =
 // Interface de Solicitud
 export interface Solicitud {
     id: string
-    codigo_expediente: string
+    codigo_expediente: string | null
     tipo_solicitud: TipoSolicitud
+    tipo_tramite?: string | null
+    origen?: 'publico' | 'autenticado'
     estado: EstadoSolicitud
-    user_id: string
+    user_id: string | null
     materia: string | null
     cuantia: number | null
     moneda: string
     descripcion_controversia: string | null
+    numero_expediente_referido?: string | null
+    sumilla?: string | null
+    asunto?: string | null
+    correo_seguimiento?: string | null
     created_at: string
     updated_at: string
     deleted_at: string | null
@@ -52,6 +59,8 @@ export interface Parte {
     numero_documento: string
     nombres_apellidos: string | null
     razon_social: string | null
+    representante_legal?: string | null
+    cargo_representante?: string | null
     celular: string | null
     domicilio: string | null
     correo_electronico?: string
@@ -69,7 +78,9 @@ export interface HistorialSolicitud {
     estado_nuevo: EstadoSolicitud | null
     descripcion: string | null
     metadata: Record<string, unknown> | null
-    user_id: string
+    user_id: string | null
+    actor_tipo?: 'publico' | 'usuario'
+    visibilidad?: 'publica' | 'interna'
     created_at: string
     deleted_at: string | null
 }
@@ -91,6 +102,8 @@ export interface CreateParteData {
     numero_documento: string
     nombres_apellidos?: string
     razon_social?: string
+    representante_legal?: string
+    cargo_representante?: string
     celular?: string
     domicilio?: string
     correo_electronico?: string

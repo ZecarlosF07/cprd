@@ -5,6 +5,7 @@ import { AdminDashboardPage } from '@/features/admin/pages'
 import { LoginPage, ProfilePage, RegisterPage } from '@/features/auth/pages'
 import { ExternalDashboardPage } from '@/features/external/pages'
 import { InternalDashboardPage } from '@/features/internal/pages'
+import { MesaPartesPublicaPage, TrazabilidadPublicaPage } from '@/features/mesa-partes-publica/pages'
 import { NewSolicitudPage, SolicitudDetailPage } from '@/features/solicitudes/pages'
 import { ROUTES } from '@/utils/constants'
 
@@ -13,9 +14,12 @@ export function AppRouter() {
         <BrowserRouter>
             <Routes>
                 {/* Public routes */}
-                <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.LOGIN} replace />} />
-                <Route path={ROUTES.LOGIN} element={<LoginPage />} />
-                <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
+                <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.MESA_PARTES} replace />} />
+                <Route path={ROUTES.MESA_PARTES} element={<MesaPartesPublicaPage />} />
+                <Route path={ROUTES.TRAZABILIDAD} element={<TrazabilidadPublicaPage />} />
+                <Route path={ROUTES.LOGIN} element={<Navigate to={ROUTES.MESA_PARTES} replace />} />
+                <Route path={ROUTES.ADMIN_LOGIN} element={<LoginPage />} />
+                <Route path={ROUTES.REGISTER} element={<Navigate to={ROUTES.MESA_PARTES} replace />} />
 
                 {/* Profile route - requires authentication but not profile */}
                 <Route
@@ -83,8 +87,8 @@ export function AppRouter() {
                     }
                 />
 
-                {/* Catch all - redirect to login */}
-                <Route path="*" element={<Navigate to={ROUTES.LOGIN} replace />} />
+                {/* Catch all - redirect to public intake */}
+                <Route path="*" element={<Navigate to={ROUTES.MESA_PARTES} replace />} />
             </Routes>
         </BrowserRouter>
     )

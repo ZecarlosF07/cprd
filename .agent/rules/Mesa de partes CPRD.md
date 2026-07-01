@@ -1,5 +1,7 @@
 # Mesa de partes CPRD
 
+> **Nota de vigencia:** Los diagramas siguientes representan el MVP autenticado original. Para el flujo público actualizado prevalece el [Hito 6](../../docs/hito_6_adecuacion_mesa_partes_publica.md): recepción sin cuenta, código único, trazabilidad pública en `/trazabilidad`, gestión solo por `administrador`, login administrativo no enlazado y sin subsanación pública.
+
 Mermaid flujo de navegacion
 
 ```

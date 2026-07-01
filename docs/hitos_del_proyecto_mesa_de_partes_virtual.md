@@ -1,6 +1,6 @@
 # Hitos del Proyecto – Mesa de Partes Virtual
 
-Este documento describe de forma **simple, cronológica y práctica** los 5 hitos del proyecto, para que todo el equipo de desarrollo tenga claro **qué se construye en cada etapa** y **en qué momento ocurre cada funcionalidad clave**.
+Este documento describe de forma **simple, cronológica y práctica** los 6 hitos del proyecto, para que todo el equipo de desarrollo tenga claro **qué se construye en cada etapa** y **en qué momento ocurre cada funcionalidad clave**.
 
 ---
 
@@ -118,6 +118,39 @@ Este documento describe de forma **simple, cronológica y práctica** los 5 hito
 
 ---
 
+## 🧩 HITO 6 - Adecuación de Mesa de Partes pública y nuevos trámites
+
+**Qué se construye en este hito**
+
+- Formulario público sin registro ni inicio de sesión para solicitantes
+- Solo dos secciones principales: Arbitraje y JPRD
+- Catálogo de trámites por sección
+- Arbitraje de Emergencia como trámite de Arbitraje
+- Campos condicionales para escritos y otros trámites
+- Representante legal y cargo para persona jurídica
+- Pago y facturación obligatorios solo en los trámites aplicables
+- Consentimientos y CAPTCHA
+- Código único, correo de recepción vía n8n e interfaz `/trazabilidad` por código
+- Campo de enlace externo de Drive para documentos pesados
+- Ruta administrativa no enlazada para login de admin
+- Panel administrador para ver registros, cambiar estado y publicar observaciones de trazabilidad
+- El rol interno queda fuera de la gestión del Hito 6
+- Adecuación de base de datos, RLS, Storage y bandeja de administrador
+
+**Reglas reemplazadas**
+
+- El solicitante ya no necesita una cuenta para presentar
+- El pago deja de ser obligatorio para todos los trámites
+- Se elimina Datos del Demandado del formulario de Arbitraje
+
+**Resultado esperado**
+
+> Un visitante puede presentar un trámite público de forma segura, recibir su código de seguimiento y ser atendido desde el panel administrador.
+
+El alcance detallado se encuentra en [Hito 6 - Adecuación de Mesa de Partes Pública](./hito_6_adecuacion_mesa_partes_publica.md).
+
+---
+
 ## 📌 Nota final para el equipo
 
 - Cada hito debe entregar una funcionalidad usable y verificable
@@ -126,4 +159,3 @@ Este documento describe de forma **simple, cronológica y práctica** los 5 hito
 - Si el proyecto se detiene en cualquier hito, el sistema sigue siendo coherente
 
 Este documento debe usarse como **guía de implementación y control de alcance** del proyecto.
-

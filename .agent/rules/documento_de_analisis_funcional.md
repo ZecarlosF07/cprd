@@ -1,5 +1,7 @@
 # Documento de Análisis Funcional
 
+> **Nota de vigencia:** Para nuevas presentaciones prevalece el [Hito 6](../../docs/hito_6_adecuacion_mesa_partes_publica.md): recepción pública sin cuenta, secciones Arbitraje/JPRD, trámite de Emergencia dentro de Arbitraje, pago condicional, enlace externo de Drive, trazabilidad limitada por código en `/trazabilidad` y gestión solo por `administrador`. Las cuentas externas se conservan únicamente para compatibilidad con expedientes anteriores.
+
 ## Sistema Institucional de Mesa de Partes Virtual
 ### Procedimientos de Arbitraje, Arbitraje de Emergencia y JPRD
 

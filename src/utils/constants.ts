@@ -23,6 +23,7 @@ export const TIPOS_SOLICITUD = {
 } as const
 
 export const ESTADOS_SOLICITUD = {
+    BORRADOR: 'borrador',
     RECIBIDA: 'recibida',
     EN_REVISION: 'en_revision',
     OBSERVADA: 'observada',
@@ -58,6 +59,7 @@ export const TIPOS_SOLICITUD_OPTIONS = [
 ] as const
 
 export const ESTADOS_SOLICITUD_OPTIONS = [
+    { value: 'borrador', label: 'Borrador', color: 'bg-neutral-100 text-neutral-700' },
     { value: 'recibida', label: 'Recibida', color: 'bg-blue-100 text-blue-800' },
     { value: 'en_revision', label: 'En Revisión', color: 'bg-yellow-100 text-yellow-800' },
     { value: 'observada', label: 'Observada', color: 'bg-orange-100 text-orange-800' },
@@ -70,11 +72,14 @@ export const ESTADOS_SOLICITUD_OPTIONS = [
 export const ROUTES = {
     HOME: '/',
     LOGIN: '/login',
+    ADMIN_LOGIN: import.meta.env.VITE_ADMIN_LOGIN_PATH ?? '/acceso-cprd',
     REGISTER: '/registro',
     PROFILE: '/perfil',
     DASHBOARD_EXTERNO: '/dashboard',
     DASHBOARD_INTERNO: '/interno',
     DASHBOARD_ADMIN: '/admin',
+    MESA_PARTES: '/mesa-de-partes',
+    TRAZABILIDAD: '/trazabilidad',
     // Rutas de solicitudes
     NUEVA_SOLICITUD: '/solicitudes/nueva',
     DETALLE_SOLICITUD: '/solicitudes/:id',

@@ -1,2 +1,5 @@
 export { supabase, isSupabaseConfigured } from './supabase.client'
 export * from './auth.service'
+export * from './admin-solicitudes.service'
+export * from './public-intake.service'
+export * from './public-tracking.service'

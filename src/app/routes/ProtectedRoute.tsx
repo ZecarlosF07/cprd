@@ -18,7 +18,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     }
 
     if (!isAuthenticated) {
-        return <Navigate to={ROUTES.LOGIN} replace />
+        return <Navigate to={ROUTES.ADMIN_LOGIN} replace />
     }
 
     return <>{children}</>

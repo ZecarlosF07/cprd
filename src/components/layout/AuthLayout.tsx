@@ -12,23 +12,27 @@ interface AuthLayoutProps {
 
 export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
     return (
-        <div className="min-h-screen bg-neutral-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen border-t-8 border-[#b6eb66] bg-[#0c211c] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <Link to={ROUTES.HOME} className="flex justify-center">
-                    <h1 className="text-2xl font-bold text-neutral-900">CPRD</h1>
+                <Link to={ROUTES.HOME} className="flex justify-center rounded-lg bg-white p-4">
+                    <img
+                        src="/brand/cprd-cobranding-full-color.png"
+                        alt="CCI CPRD"
+                        className="h-auto w-full max-w-sm"
+                    />
                 </Link>
-                <h2 className="mt-6 text-center text-3xl font-semibold text-neutral-900">
+                <h2 className="mt-8 text-center text-3xl font-semibold text-white">
                     {title}
                 </h2>
                 {subtitle && (
-                    <p className="mt-2 text-center text-sm text-neutral-600">
+                    <p className="mt-2 text-center text-sm text-[#c8d8d0]">
                         {subtitle}
                     </p>
                 )}
             </div>
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-                <div className="bg-white py-8 px-4 shadow-sm rounded-xl sm:px-10 border border-neutral-200">
+                <div className="rounded-lg border border-[#b6eb66] bg-white px-4 py-8 shadow-lg sm:px-10">
                     {children}
                 </div>
             </div>

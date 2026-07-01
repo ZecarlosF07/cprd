@@ -6,7 +6,6 @@ import { Loader } from '@/components/ui'
 import { useAuthStore } from '@/store'
 import type { RolUsuario } from '@/types'
 import { ROUTES } from '@/utils/constants'
-import { getDashboardRoute } from '@/utils/route.utils'
 
 interface RoleRouteProps {
     children: ReactNode
@@ -21,7 +20,7 @@ export function RoleRoute({ children, allowedRoles }: RoleRouteProps) {
     }
 
     if (!isAuthenticated) {
-        return <Navigate to={ROUTES.LOGIN} replace />
+        return <Navigate to={ROUTES.ADMIN_LOGIN} replace />
     }
 
     if (!profile) {
@@ -29,7 +28,11 @@ export function RoleRoute({ children, allowedRoles }: RoleRouteProps) {
     }
 
     if (!allowedRoles.includes(profile.rol)) {
-        return <Navigate to={getDashboardRoute(profile.rol)} replace />
+        const fallbackRoute = profile.rol === 'administrador'
+            ? ROUTES.DASHBOARD_ADMIN
+            : ROUTES.MESA_PARTES
+
+        return <Navigate to={fallbackRoute} replace />
     }
 
     return <>{children}</>

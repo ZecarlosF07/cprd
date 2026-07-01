@@ -1,17 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { AuthLayout } from '@/components/layout'
 import { Button, Input } from '@/components/ui'
 import { loginSchema, type LoginFormData } from '@/features/auth/schemas'
 import { useAuthStore } from '@/store'
 import { ROUTES } from '@/utils/constants'
-import { getDashboardRoute } from '@/utils/route.utils'
 
 export function LoginPage() {
-    const { login, isLoading, error, clearError, isAuthenticated, profile, profileChecked } = useAuthStore()
+    const { login, logout, isLoading, error, clearError, isAuthenticated, profile, profileChecked } = useAuthStore()
     const navigate = useNavigate()
     const location = useLocation()
     const registrationState = location.state as {
@@ -40,8 +39,13 @@ export function LoginPage() {
             return
         }
 
-        navigate(getDashboardRoute(profile.rol), { replace: true })
-    }, [isAuthenticated, isLoading, profile, profileChecked, navigate])
+        if (profile.rol === 'administrador') {
+            navigate(ROUTES.DASHBOARD_ADMIN, { replace: true })
+            return
+        }
+
+        void logout().then(() => navigate(ROUTES.MESA_PARTES, { replace: true }))
+    }, [isAuthenticated, isLoading, profile, profileChecked, navigate, logout])
 
     const onSubmit = async (data: LoginFormData) => {
         clearError()
@@ -88,16 +92,6 @@ export function LoginPage() {
                 <Button type="submit" fullWidth isLoading={isLoading}>
                     Iniciar sesión
                 </Button>
-
-                <p className="text-center text-sm text-neutral-600">
-                    ¿No tiene una cuenta?{' '}
-                    <Link
-                        to={ROUTES.REGISTER}
-                        className="font-medium text-neutral-900 hover:underline"
-                    >
-                        Regístrese aquí
-                    </Link>
-                </p>
             </form>
         </AuthLayout>
     )
