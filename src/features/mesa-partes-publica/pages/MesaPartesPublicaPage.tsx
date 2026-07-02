@@ -38,6 +38,17 @@ export function MesaPartesPublicaPage() {
         setForm({ ...form, seccion, tramiteCodigo: firstTramite.codigo, pago: { ...form.pago, tipoFacturacion: 'boleta' } })
     }
 
+    const handleTramiteChange = (tramiteCodigo: string) => {
+        const nextTramite = getTramiteByCodigo(tramiteCodigo)
+        setForm({
+            ...form,
+            tramiteCodigo,
+            pago: nextTramite?.requierePago
+                ? form.pago
+                : { tipoFacturacion: 'boleta', nombreRazonSocial: '', documento: '', direccion: '' },
+        })
+    }
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         setSubmitError(null)
@@ -81,7 +92,7 @@ export function MesaPartesPublicaPage() {
                 )}
                 {submitError && <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">{submitError}</div>}
                 <SeccionSelector value={form.seccion} onChange={handleSeccionChange} />
-                <TramiteSelector seccion={form.seccion} value={form.tramiteCodigo} onChange={(tramiteCodigo) => setForm({ ...form, tramiteCodigo })} error={errorFor('tramiteCodigo')} />
+                <TramiteSelector seccion={form.seccion} value={form.tramiteCodigo} onChange={handleTramiteChange} error={errorFor('tramiteCodigo')} />
                 <SolicitanteForm value={form.solicitante} onChange={(solicitante) => setForm({ ...form, solicitante })} errorFor={errorFor} />
                 <DocumentoPrincipalForm value={form} tramite={tramite} onChange={setForm} errorFor={errorFor} />
                 <DocumentosForm value={form.documentos} onChange={(documentos) => setForm({ ...form, documentos })} errorFor={errorFor} />

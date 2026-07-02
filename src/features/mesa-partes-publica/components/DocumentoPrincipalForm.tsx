@@ -14,6 +14,10 @@ export function DocumentoPrincipalForm({ value, tramite, onChange, errorFor }: D
         onChange({ ...value, [field]: next })
     }
 
+    if (!tramite?.requiereExpediente && !tramite?.requiereSumilla && !tramite?.requiereAsunto) {
+        return null
+    }
+
     return (
         <section className="space-y-4">
             <h2 className="border-l-4 border-[#2a7221] pl-3 text-lg font-semibold text-[#0c211c]">Datos del documento</h2>
@@ -25,9 +29,6 @@ export function DocumentoPrincipalForm({ value, tramite, onChange, errorFor }: D
             )}
             {tramite?.requiereAsunto && (
                 <Textarea label="Asunto" value={value.asunto} onChange={(event) => update('asunto', event.target.value)} error={errorFor('asunto')} />
-            )}
-            {!tramite?.requiereExpediente && !tramite?.requiereSumilla && !tramite?.requiereAsunto && (
-                <p className="text-sm text-neutral-600">Este trámite no requiere datos adicionales del expediente.</p>
             )}
         </section>
     )
