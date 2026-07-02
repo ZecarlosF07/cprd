@@ -206,6 +206,8 @@ async function validatePayload(payload: IntakePayload, formData: FormData): Prom
     if (tramite.asunto) requireText(payload.asunto, 'Ingrese asunto', 2000)
     if (!payload.aceptaNotificaciones || !payload.aceptaDatosPersonales) throw new RequestError('Debe aceptar los consentimientos')
     if (!Array.isArray(payload.documentos) || !payload.documentos.length || payload.documentos.length > 10) throw new RequestError('Adjunte entre 1 y 10 documentos')
+    if (payload.documentos[0]?.tipoDocumento !== 'solicitud_principal') throw new RequestError('Adjunte el documento principal')
+    if (payload.documentos.slice(1).some((doc) => doc.tipoDocumento !== 'anexo')) throw new RequestError('Los documentos adicionales deben registrarse como anexos')
 
     const files: File[] = []
     const documentFiles: Array<File | null> = []

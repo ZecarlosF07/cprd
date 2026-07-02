@@ -42,7 +42,7 @@ export const solicitudPublicaSchema = z.object({
         comentario: z.string(),
         enlaceExterno: z.string().url('Ingrese un enlace válido').or(z.literal('')),
         archivo: archivoSchema.optional(),
-    })).min(1),
+    })).min(1, 'Adjunte el documento principal').max(10, 'Puede adjuntar como máximo 10 documentos'),
     pago: z.object({
         tipoFacturacion: z.enum(['boleta', 'factura_contado', 'factura_credito', 'factura']),
         nombreRazonSocial: z.string(),
@@ -78,6 +78,14 @@ export const solicitudPublicaSchema = z.object({
     }
     if (tramite?.requiereAsunto) {
         requireField(ctx, data.asunto, ['asunto'], 'Ingrese asunto')
+    }
+
+    if (data.documentos[0]?.tipoDocumento !== 'solicitud_principal') {
+        ctx.addIssue({ code: 'custom', path: ['documentos'], message: 'Adjunte el documento principal' })
+    }
+
+    if (data.documentos.slice(1).some((documento) => documento.tipoDocumento !== 'anexo')) {
+        ctx.addIssue({ code: 'custom', path: ['documentos'], message: 'Los documentos adicionales deben registrarse como anexos' })
     }
 
     data.documentos.forEach((documento, index) => {

@@ -84,7 +84,7 @@ export function MesaPartesPublicaPage() {
                 <TramiteSelector seccion={form.seccion} value={form.tramiteCodigo} onChange={(tramiteCodigo) => setForm({ ...form, tramiteCodigo })} error={errorFor('tramiteCodigo')} />
                 <SolicitanteForm value={form.solicitante} onChange={(solicitante) => setForm({ ...form, solicitante })} errorFor={errorFor} />
                 <DocumentoPrincipalForm value={form} tramite={tramite} onChange={setForm} errorFor={errorFor} />
-                <DocumentosForm value={form.documentos} onChange={(documentos) => setForm({ ...form, documentos })} error={errorFor('documentos')} />
+                <DocumentosForm value={form.documentos} onChange={(documentos) => setForm({ ...form, documentos })} errorFor={errorFor} />
                 <PagoForm value={form.pago} seccion={form.seccion} required={Boolean(tramite?.requierePago)} onChange={(pago) => setForm({ ...form, pago })} errorFor={errorFor} />
                 <ConsentimientosForm value={form} onChange={setForm} errorFor={errorFor} />
                 <TurnstileWidget
