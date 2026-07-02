@@ -58,6 +58,7 @@ export interface PagoPublico {
 }
 
 export interface SolicitudPublicaFormData {
+    idempotencyKey: string
     seccion: SeccionMesaPartes
     tramiteCodigo: string
     solicitante: SolicitantePublico

@@ -72,7 +72,7 @@ export const ESTADOS_SOLICITUD_OPTIONS = [
 export const ROUTES = {
     HOME: '/',
     LOGIN: '/login',
-    ADMIN_LOGIN: import.meta.env.VITE_ADMIN_LOGIN_PATH ?? '/acceso-cprd',
+    ADMIN_LOGIN: import.meta.env.VITE_ADMIN_LOGIN_PATH,
     REGISTER: '/registro',
     PROFILE: '/perfil',
     DASHBOARD_EXTERNO: '/dashboard',

@@ -160,7 +160,7 @@ SECURITY DEFINER
 SET search_path = public
 AS $$
 BEGIN
-    IF NEW.codigo_expediente IS NULL AND NEW.estado <> 'borrador' THEN
+    IF NEW.codigo_expediente IS NULL AND NEW.estado::text <> 'borrador' THEN
         NEW.codigo_expediente := public.next_public_codigo();
     END IF;
 
@@ -181,7 +181,7 @@ SECURITY DEFINER
 SET search_path = public
 AS $$
 BEGIN
-    IF NEW.estado <> 'borrador' THEN
+    IF NEW.estado::text <> 'borrador' THEN
         BEGIN
             INSERT INTO public.historial_solicitud (
                 solicitud_id, accion, estado_anterior, estado_nuevo, descripcion, user_id, actor_tipo, visibilidad
@@ -260,7 +260,7 @@ AS $$
         AND o.visibilidad = 'publica'
     WHERE s.codigo_expediente = codigo
     AND s.origen = 'publico'
-    AND s.estado <> 'borrador'
+    AND s.estado::text <> 'borrador'
     GROUP BY s.id;
 $$;
 

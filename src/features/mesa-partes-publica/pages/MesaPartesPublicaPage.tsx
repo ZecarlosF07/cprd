@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import type { ZodIssue } from 'zod'
 
 import { Button } from '@/components/ui'
@@ -13,44 +13,25 @@ import {
     SeccionSelector,
     SolicitanteForm,
     TramiteSelector,
+    TurnstileWidget,
 } from '../components'
 import { validarSolicitudPublica } from '../schemas/mesa-partes-publica.schemas'
 import type { SolicitudPublicaFormData } from '../types/mesa-partes-publica.types'
+import { createInitialPublicIntakeForm } from '../utils/initial-form.utils'
 import { getTramiteByCodigo, getTramitesBySeccion } from '../utils/tramites.utils'
 
-const initialForm: SolicitudPublicaFormData = {
-    seccion: 'arbitraje',
-    tramiteCodigo: 'arbitraje_institucional',
-    solicitante: {
-        tipoPersona: 'natural',
-        tipoDocumento: 'dni',
-        numeroDocumento: '',
-        nombresApellidos: '',
-        razonSocial: '',
-        representanteLegal: '',
-        cargoRepresentante: '',
-        celular: '',
-        correo: '',
-        domicilio: '',
-    },
-    numeroExpedienteReferido: '',
-    sumilla: '',
-    asunto: '',
-    documentos: [{ tipoDocumento: 'solicitud_principal', comentario: '', enlaceExterno: '' }],
-    pago: { tipoFacturacion: 'boleta', nombreRazonSocial: '', documento: '', direccion: '' },
-    aceptaNotificaciones: false,
-    aceptaDatosPersonales: false,
-    captchaToken: '',
-}
-
 export function MesaPartesPublicaPage() {
-    const [form, setForm] = useState<SolicitudPublicaFormData>(initialForm)
+    const [form, setForm] = useState<SolicitudPublicaFormData>(createInitialPublicIntakeForm)
     const [issues, setIssues] = useState<ZodIssue[]>([])
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [result, setResult] = useState<string | null>(null)
     const [submitError, setSubmitError] = useState<string | null>(null)
+    const [captchaResetKey, setCaptchaResetKey] = useState(0)
     const tramite = useMemo(() => getTramiteByCodigo(form.tramiteCodigo), [form.tramiteCodigo])
     const errorFor = (path: string) => issues.find((issue) => issue.path.join('.') === path)?.message
+    const handleCaptchaToken = useCallback((captchaToken: string) => {
+        setForm((current) => ({ ...current, captchaToken }))
+    }, [])
 
     const handleSeccionChange = (seccion: SolicitudPublicaFormData['seccion']) => {
         const firstTramite = getTramitesBySeccion(seccion)[0]
@@ -75,6 +56,8 @@ export function MesaPartesPublicaPage() {
             setResult(response.codigo)
         } catch (error) {
             setSubmitError(error instanceof Error ? error.message : 'No se pudo registrar la solicitud')
+            setForm((current) => ({ ...current, captchaToken: '' }))
+            setCaptchaResetKey((current) => current + 1)
         } finally {
             setIsSubmitting(false)
         }
@@ -104,6 +87,11 @@ export function MesaPartesPublicaPage() {
                 <DocumentosForm value={form.documentos} onChange={(documentos) => setForm({ ...form, documentos })} error={errorFor('documentos')} />
                 <PagoForm value={form.pago} seccion={form.seccion} required={Boolean(tramite?.requierePago)} onChange={(pago) => setForm({ ...form, pago })} errorFor={errorFor} />
                 <ConsentimientosForm value={form} onChange={setForm} errorFor={errorFor} />
+                <TurnstileWidget
+                    resetKey={captchaResetKey}
+                    onToken={handleCaptchaToken}
+                    error={errorFor('captchaToken')}
+                />
                 <Button type="submit" isLoading={isSubmitting} fullWidth>
                     Enviar documento
                 </Button>

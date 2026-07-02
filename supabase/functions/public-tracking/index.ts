@@ -1,28 +1,33 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.93.3'
 
-const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+const CODE_PATTERN = /^\d{4}-\d{7}$/
 
 Deno.serve(async (request) => {
-    if (request.method === 'OPTIONS') {
-        return new Response('ok', { headers: corsHeaders })
-    }
+    if (request.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders() })
+    if (request.method !== 'POST') return json({ error: 'Método no permitido' }, 405)
 
     try {
-        const { codigo } = await request.json()
-        if (!codigo || typeof codigo !== 'string') {
-            throw new Error('Ingrese el código de seguimiento')
-        }
+        const body = await request.json().catch(() => ({}))
+        const codigo = typeof body.codigo === 'string' ? body.codigo.trim() : ''
+        if (!CODE_PATTERN.test(codigo)) return json({ error: 'Ingrese un código de seguimiento válido' }, 400)
 
-        const supabase = createClient(
-            Deno.env.get('SUPABASE_URL') ?? '',
-            Deno.env.get('SUPABASE_ANON_KEY') ?? ''
-        )
-        const { data, error } = await supabase.rpc('buscar_trazabilidad_publica', { codigo: codigo.trim() })
+        const supabaseUrl = Deno.env.get('SUPABASE_URL')
+        const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
+        if (!supabaseUrl || !serviceKey) throw new Error('Configuración de Supabase incompleta')
+        const supabase = createClient(supabaseUrl, serviceKey)
+
+        const ip = (request.headers.get('cf-connecting-ip') ?? request.headers.get('x-forwarded-for')?.split(',')[0] ?? 'unknown').trim()
+        const salt = Deno.env.get('RATE_LIMIT_SALT') ?? serviceKey
+        const keyHash = await sha256(`tracking:${ip}:${salt}`)
+        const { data: allowed, error: rateError } = await supabase.rpc('check_public_rate_limit', {
+            p_accion: 'public_tracking', p_key_hash: keyHash, p_limit: 30, p_window_seconds: 300,
+        })
+        if (rateError) throw rateError
+        if (!allowed) return json({ error: 'Demasiadas consultas. Intente nuevamente en unos minutos.' }, 429)
+
+        const { data, error } = await supabase.rpc('buscar_trazabilidad_publica', { codigo })
         if (error) throw error
-        if (!data?.length) throw new Error('No se encontró el documento')
+        if (!data?.length) return json({ error: 'No se encontró el documento' }, 404)
 
         const item = data[0]
         return json({
@@ -34,13 +39,27 @@ Deno.serve(async (request) => {
             observaciones: item.observaciones ?? [],
         })
     } catch (error) {
-        return json({ error: error instanceof Error ? error.message : 'No se encontró el documento' }, 404)
+        console.error(error instanceof Error ? error.message : 'Error interno en public-tracking')
+        return json({ error: 'No se pudo consultar la trazabilidad. Intente nuevamente.' }, 500)
     }
 })
+
+async function sha256(value: string) {
+    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value))
+    return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, '0')).join('')
+}
+
+function corsHeaders() {
+    return {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    }
+}
 
 function json(body: unknown, status = 200) {
     return new Response(JSON.stringify(body), {
         status,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders(), 'Content-Type': 'application/json' },
     })
 }

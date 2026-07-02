@@ -4,6 +4,7 @@ import type { SolicitudPublicaFormData } from '../types/mesa-partes-publica.type
 import { getTramiteByCodigo } from '../utils/tramites.utils'
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024
+const MAX_TOTAL_FILE_SIZE = 20 * 1024 * 1024
 const ALLOWED_TYPES = [
     'application/pdf',
     'application/msword',
@@ -18,6 +19,7 @@ const archivoSchema = z
     .refine((file) => ALLOWED_TYPES.includes(file.type), 'Formato no permitido')
 
 export const solicitudPublicaSchema = z.object({
+    idempotencyKey: z.string().uuid(),
     seccion: z.enum(['arbitraje', 'jprd']),
     tramiteCodigo: z.string().min(1, 'Seleccione un trámite'),
     solicitante: z.object({
@@ -54,7 +56,7 @@ export const solicitudPublicaSchema = z.object({
     aceptaDatosPersonales: z.literal(true, {
         error: 'Debe aceptar el tratamiento de datos personales',
     }),
-    captchaToken: z.string(),
+    captchaToken: z.string().min(1, 'Complete la validación de seguridad'),
 }).superRefine((data, ctx) => {
     const tramite = getTramiteByCodigo(data.tramiteCodigo)
 
@@ -78,10 +80,11 @@ export const solicitudPublicaSchema = z.object({
         requireField(ctx, data.asunto, ['asunto'], 'Ingrese asunto')
     }
 
-    const hasDocumento = data.documentos.some((doc) => doc.archivo || doc.enlaceExterno)
-    if (!hasDocumento) {
-        ctx.addIssue({ code: 'custom', path: ['documentos'], message: 'Adjunte un archivo o enlace de Drive' })
-    }
+    data.documentos.forEach((documento, index) => {
+        if (!documento.archivo && !documento.enlaceExterno) {
+            ctx.addIssue({ code: 'custom', path: ['documentos', index], message: 'Adjunte un archivo o enlace de Drive' })
+        }
+    })
 
     if (tramite?.requierePago) {
         requireField(ctx, data.pago.nombreRazonSocial, ['pago', 'nombreRazonSocial'], 'Ingrese datos de facturación')
@@ -90,6 +93,12 @@ export const solicitudPublicaSchema = z.object({
         if (!data.pago.archivo) {
             ctx.addIssue({ code: 'custom', path: ['pago', 'archivo'], message: 'Adjunte comprobante de pago' })
         }
+    }
+
+    const totalSize = data.documentos.reduce((total, documento) => total + (documento.archivo?.size ?? 0), 0)
+        + (tramite?.requierePago ? data.pago.archivo?.size ?? 0 : 0)
+    if (totalSize > MAX_TOTAL_FILE_SIZE) {
+        ctx.addIssue({ code: 'custom', path: ['documentos'], message: 'Los archivos no deben superar 20 MB en total; use enlaces de Drive para archivos pesados' })
     }
 })
 
