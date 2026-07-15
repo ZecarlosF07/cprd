@@ -7,7 +7,6 @@ import { z } from 'zod'
 import { Button, FileUpload, Select, Textarea } from '@/components/ui'
 import { uploadSolicitudFile } from '@/services/storage.service'
 import { useAuthStore, useSolicitudStore } from '@/store'
-import type { TipoDocumentoAdjunto } from '@/types'
 
 const documentoSchema = z.object({
     tipo_documento: z.enum([
@@ -73,7 +72,7 @@ export function DocumentoUpload({ solicitudId, onSuccess }: DocumentoUploadProps
 
             // 2. Crear registro en DB
             const doc = await addDocumento(user.id, solicitudId, {
-                tipo_documento: data.tipo_documento as TipoDocumentoAdjunto,
+                tipo_documento: data.tipo_documento,
                 nombre_archivo: file.name,
                 archivo_url: uploadRes.path, // Guardamos el path relativo
                 tamano_bytes: file.size,

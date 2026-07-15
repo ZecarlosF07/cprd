@@ -32,7 +32,7 @@ export function RegisterPage() {
     useEffect(() => {
         if (!isAuthenticated) return
 
-        navigate(profile ? getDashboardRoute(profile.rol) : ROUTES.PROFILE, {
+        void navigate(profile ? getDashboardRoute(profile.rol) : ROUTES.PROFILE, {
             replace: true,
         })
     }, [isAuthenticated, navigate, profile])
@@ -42,12 +42,12 @@ export function RegisterPage() {
         const result = await registerUser(data)
 
         if (result === 'authenticated') {
-            navigate(ROUTES.PROFILE)
+            void navigate(ROUTES.PROFILE)
             return
         }
 
         if (result === 'confirmation_required') {
-            navigate(ROUTES.LOGIN, {
+            void navigate(ROUTES.LOGIN, {
                 replace: true,
                 state: {
                     registrationMessage:

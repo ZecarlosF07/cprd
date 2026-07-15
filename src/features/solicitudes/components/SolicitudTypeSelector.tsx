@@ -3,8 +3,10 @@ import { useFormContext } from 'react-hook-form'
 import { cn } from '@/lib/utils'
 import { TIPOS_SOLICITUD_OPTIONS } from '@/utils/constants'
 
+import type { LegacySolicitudFormData } from '../types/legacy-solicitud.types'
+
 export function SolicitudTypeSelector() {
-    const { register, watch, setValue } = useFormContext()
+    const { register, watch, setValue } = useFormContext<LegacySolicitudFormData>()
     const selectedType = watch('tipo_solicitud')
 
     return (

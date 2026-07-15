@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Button, Select, Textarea } from '@/components/ui'
 import { ESTADOS_SOLICITUD_OPTIONS } from '@/utils/constants'
@@ -17,12 +17,6 @@ export function AdminSolicitudPanel({ solicitud, onEstadoChange, onObservacion }
     const [mensaje, setMensaje] = useState('')
     const [visibilidad, setVisibilidad] = useState<'publica' | 'interna'>('publica')
     const [isSaving, setIsSaving] = useState(false)
-
-    useEffect(() => {
-        if (solicitud) {
-            setEstado(solicitud.estado)
-        }
-    }, [solicitud])
 
     if (!solicitud) {
         return <div className="rounded-lg border border-[#b9cbbf] bg-white p-6 text-neutral-500">Seleccione una solicitud.</div>

@@ -35,12 +35,12 @@ export function LoginPage() {
         }
 
         if (!profile) {
-            navigate(ROUTES.PROFILE, { replace: true })
+            void navigate(ROUTES.PROFILE, { replace: true })
             return
         }
 
         if (profile.rol === 'administrador') {
-            navigate(ROUTES.DASHBOARD_ADMIN, { replace: true })
+            void navigate(ROUTES.DASHBOARD_ADMIN, { replace: true })
             return
         }
 

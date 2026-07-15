@@ -2,24 +2,14 @@ import { useFormContext } from 'react-hook-form'
 
 import { Input } from '@/components/ui'
 
+import type { LegacySolicitudFormData } from '../types/legacy-solicitud.types'
 import { ParteForm } from './ParteForm'
 
 export function JPRDForm() {
     const {
         register,
         formState: { errors },
-    } = useFormContext()
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const getError = (name: string) => {
-        const parts = name.split('.')
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let obj: any = errors
-        for (const part of parts) {
-            obj = obj?.[part]
-        }
-        return obj?.message as string | undefined
-    }
+    } = useFormContext<LegacySolicitudFormData>()
 
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -40,7 +30,7 @@ export function JPRDForm() {
                 <div className="grid gap-6">
                     <Input
                         label="Nombre de la Entidad"
-                        error={getError('entidad.nombre_entidad')}
+                        error={errors.entidad?.nombre_entidad?.message}
                         {...register('entidad.nombre_entidad')}
                     />
 
@@ -48,20 +38,20 @@ export function JPRDForm() {
                         <Input
                             label="RUC de la Entidad"
                             maxLength={11}
-                            error={getError('entidad.ruc_entidad')}
+                            error={errors.entidad?.ruc_entidad?.message}
                             {...register('entidad.ruc_entidad')}
                         />
                         <Input
                             label="Correo de Contacto"
                             type="email"
-                            error={getError('entidad.correo_contacto')}
+                            error={errors.entidad?.correo_contacto?.message}
                             {...register('entidad.correo_contacto')}
                         />
                     </div>
 
                     <Input
                         label="Dirección de la Entidad"
-                        error={getError('entidad.direccion_entidad')}
+                        error={errors.entidad?.direccion_entidad?.message}
                         {...register('entidad.direccion_entidad')}
                     />
                 </div>

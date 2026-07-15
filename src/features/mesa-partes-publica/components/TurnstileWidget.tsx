@@ -22,8 +22,13 @@ const SCRIPT_ID = 'cloudflare-turnstile-script'
 export function TurnstileWidget({ resetKey, onToken, error }: TurnstileWidgetProps) {
     const containerRef = useRef<HTMLDivElement>(null)
     const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY
+    const isE2EMode = import.meta.env.MODE === 'test-e2e'
 
     useEffect(() => {
+        if (isE2EMode) {
+            onToken('e2e-turnstile-token')
+            return
+        }
         if (!siteKey || !containerRef.current) return
         let widgetId: string | undefined
         let cancelled = false
@@ -59,7 +64,11 @@ export function TurnstileWidget({ resetKey, onToken, error }: TurnstileWidgetPro
             script?.removeEventListener('load', render)
             if (widgetId && window.turnstile) window.turnstile.remove(widgetId)
         }
-    }, [onToken, resetKey, siteKey])
+    }, [isE2EMode, onToken, resetKey, siteKey])
+
+    if (isE2EMode) {
+        return <p data-testid="turnstile-e2e" className="text-sm text-neutral-600">Validación de prueba completada.</p>
+    }
 
     if (!siteKey) {
         return <p className="text-sm text-red-700">La validación de seguridad no está configurada.</p>

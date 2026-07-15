@@ -15,7 +15,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
     const handleLogout = async () => {
         await logout()
-        navigate(ROUTES.ADMIN_LOGIN)
+        void navigate(ROUTES.ADMIN_LOGIN)
     }
 
     return (

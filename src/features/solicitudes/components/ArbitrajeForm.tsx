@@ -1,10 +1,6 @@
-import { useFormContext } from 'react-hook-form'
-
 import { ParteForm } from './ParteForm'
 
 export function ArbitrajeForm() {
-    useFormContext()
-
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* El demandante se crea en base al perfil del usuario, 

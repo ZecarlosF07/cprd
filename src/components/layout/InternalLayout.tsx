@@ -15,7 +15,7 @@ export function InternalLayout({ children }: InternalLayoutProps) {
 
     const handleLogout = async () => {
         await logout()
-        navigate(ROUTES.LOGIN)
+        void navigate(ROUTES.LOGIN)
     }
 
     const displayName = profile?.nombres_apellidos ?? user?.email

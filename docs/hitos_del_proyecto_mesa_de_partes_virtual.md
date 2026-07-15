@@ -1,6 +1,6 @@
 # Hitos del Proyecto – Mesa de Partes Virtual
 
-Este documento describe de forma **simple, cronológica y práctica** los 6 hitos del proyecto, para que todo el equipo de desarrollo tenga claro **qué se construye en cada etapa** y **en qué momento ocurre cada funcionalidad clave**.
+Este documento describe de forma **simple, cronológica y práctica** los 7 hitos del proyecto, para que todo el equipo de desarrollo tenga claro **qué se construye en cada etapa** y **en qué momento ocurre cada funcionalidad clave**.
 
 ---
 
@@ -148,6 +148,36 @@ Este documento describe de forma **simple, cronológica y práctica** los 6 hito
 > Un visitante puede presentar un trámite público de forma segura, recibir su código de seguimiento y ser atendido desde el panel administrador.
 
 El alcance detallado se encuentra en [Hito 6 - Adecuación de Mesa de Partes Pública](./hito_6_adecuacion_mesa_partes_publica.md).
+
+---
+
+## 🧩 HITO 7 - Saneamiento técnico, calidad y seguridad
+
+**Qué se construye en este hito**
+
+- Corrección de los errores de TypeScript existentes
+- Typecheck y ESLint para la aplicación React y las Edge Functions
+- Pruebas unitarias con Vitest y pruebas E2E con Playwright
+- Cobertura mínima verificable y pruebas E2E locales reproducibles
+- Refactorización de componentes y páginas que superan 120 líneas
+- Modularización de servicios y de la Edge Function `public-intake`
+- Retiro de `.env` del control de versiones y tratamiento de credenciales expuestas
+- Pipeline de integración continua con todas las puertas de calidad
+- README específico del proyecto
+- Documentación del orden y aplicación manual de scripts SQL
+- Validación automática mediante typecheck, lint, pruebas y build
+
+**Reglas importantes**
+
+- Este hito no cambia los requerimientos funcionales del Hito 6
+- No se deben ocultar errores con `any`, `@ts-ignore` o desactivación general de reglas
+- No se deben desplegar cambios ni ejecutar SQL en producción sin aprobación
+
+**Resultado esperado**
+
+> El repositorio queda limpio, documentado, protegido y verificable antes de realizar la auditoría integral del Hito 6.
+
+El alcance detallado se encuentra en [Hito 7 - Saneamiento Técnico, Calidad y Seguridad](./hito_7_saneamiento_tecnico_calidad_y_seguridad.md).
 
 ---
 

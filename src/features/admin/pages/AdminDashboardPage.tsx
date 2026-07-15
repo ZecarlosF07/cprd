@@ -59,7 +59,7 @@ export function AdminDashboardPage() {
                 {!isLoading && !error && solicitudes.length > 0 && (
                     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
                         <AdminSolicitudesTable solicitudes={solicitudes} selectedId={selected?.id} onSelect={setSelected} />
-                        <AdminSolicitudPanel solicitud={selected} onEstadoChange={handleEstadoChange} onObservacion={handleObservacion} />
+                        <AdminSolicitudPanel key={selected?.id} solicitud={selected} onEstadoChange={handleEstadoChange} onObservacion={handleObservacion} />
                     </div>
                 )}
                 {!isLoading && !error && solicitudes.length === 0 && (

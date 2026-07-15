@@ -15,7 +15,7 @@ export function ExternalLayout({ children }: ExternalLayoutProps) {
 
     const handleLogout = async () => {
         await logout()
-        navigate(ROUTES.LOGIN)
+        void navigate(ROUTES.LOGIN)
     }
 
     const displayName = profile?.nombres_apellidos ?? profile?.razon_social ?? user?.email

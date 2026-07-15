@@ -2,7 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 import { ProfileRequiredRoute, ProtectedRoute, RoleRoute } from '@/app/routes'
 import { AdminDashboardPage } from '@/features/admin/pages'
-import { LoginPage, ProfilePage, RegisterPage } from '@/features/auth/pages'
+import { LoginPage, ProfilePage } from '@/features/auth/pages'
 import { ExternalDashboardPage } from '@/features/external/pages'
 import { InternalDashboardPage } from '@/features/internal/pages'
 import { MesaPartesPublicaPage, TrazabilidadPublicaPage } from '@/features/mesa-partes-publica/pages'

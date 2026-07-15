@@ -25,7 +25,7 @@ export async function listSolicitudesPublicas(): Promise<AdminSolicitud[]> {
         throw error
     }
 
-    return (data ?? []) as AdminSolicitud[]
+    return data ?? []
 }
 
 export async function actualizarEstadoSolicitud(id: string, estado: EstadoSolicitud) {

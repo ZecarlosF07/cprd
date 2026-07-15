@@ -7,6 +7,11 @@ interface EstadoDisplay {
 }
 
 const ESTADO_MAP: Record<EstadoSolicitud, EstadoDisplay> = {
+    borrador: {
+        label: 'Borrador',
+        bgColor: 'bg-neutral-100',
+        textColor: 'text-neutral-700',
+    },
     recibida: {
         label: 'Recibida',
         bgColor: 'bg-blue-100',
