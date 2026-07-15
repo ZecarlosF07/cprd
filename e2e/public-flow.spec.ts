@@ -4,7 +4,26 @@ const trackingResult = {
     codigo: '2026-0000001',
     estado: 'recibida',
     fechaIngreso: '2026-07-15T12:00:00-05:00',
-    observaciones: [],
+    eventos: [
+        {
+            id: 'evento-1',
+            tipo: 'creacion',
+            titulo: 'Documento recibido',
+            descripcion: 'Documento recibido por mesa de partes',
+            estadoAnterior: null,
+            estadoNuevo: 'recibida',
+            fecha: '2026-07-15T12:00:00-05:00',
+        },
+        {
+            id: 'evento-2',
+            tipo: 'cambio_estado',
+            titulo: 'Estado actualizado',
+            descripcion: 'Cambio de estado administrativo',
+            estadoAnterior: 'recibida',
+            estadoNuevo: 'en_revision',
+            fecha: '2026-07-15T13:00:00-05:00',
+        },
+    ],
     seccion: 'arbitraje',
     tramite: 'Solicitud de Arbitraje Institucional',
 }
@@ -53,7 +72,10 @@ test('consulta trazabilidad mediante una respuesta controlada', async ({ page })
     await page.getByRole('button', { name: 'Consultar' }).click()
 
     await expect(page.getByText('Solicitud de Arbitraje Institucional')).toBeVisible()
-    await expect(page.getByText('recibida')).toBeVisible()
+    await expect(page.getByText('Recibida', { exact: true })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Historial del trámite' })).toBeVisible()
+    await expect(page.getByText('Estado actualizado')).toBeVisible()
+    await expect(page.getByText('Recibida → En revisión')).toBeVisible()
 })
 
 test('protege el panel administrador para visitantes', async ({ page }) => {

@@ -3,8 +3,8 @@ import { useState } from 'react'
 import { Button, Input } from '@/components/ui'
 import { buscarTrazabilidadPublica } from '@/services'
 
-import { PublicLayout } from '../components'
-import type { TrazabilidadPublica } from '../types/mesa-partes-publica.types'
+import { PublicLayout, TrazabilidadSummary, TrazabilidadTimeline } from '../components'
+import type { TrazabilidadPublica } from '../types/tracking.types'
 
 export function TrazabilidadPublicaPage() {
     const [codigo, setCodigo] = useState('')
@@ -28,7 +28,7 @@ export function TrazabilidadPublicaPage() {
 
     return (
         <PublicLayout>
-            <div className="mx-auto max-w-2xl space-y-6">
+            <div className="mx-auto max-w-4xl space-y-6">
                 <div className="relative overflow-hidden rounded-lg bg-[#0c211c] px-6 py-7 text-white sm:px-8">
                     <div className="absolute inset-y-0 left-0 w-2 bg-[#b6eb66]" />
                     <p className="mb-2 text-sm font-semibold uppercase text-[#b6eb66]">Consulta pública</p>
@@ -41,34 +41,12 @@ export function TrazabilidadPublicaPage() {
                 </form>
                 {error && <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">{error}</div>}
                 {result && (
-                    <section className="rounded-lg border border-[#b9cbbf] border-t-4 border-t-[#2a7221] bg-white p-5">
-                        <dl className="grid gap-4 sm:grid-cols-2">
-                            <Item label="Código" value={result.codigo} />
-                            <Item label="Estado" value={result.estado} />
-                            <Item label="Sección" value={result.seccion} />
-                            <Item label="Trámite" value={result.tramite} />
-                            <Item label="Fecha de ingreso" value={new Date(result.fechaIngreso).toLocaleString()} />
-                        </dl>
-                        {result.observaciones.length > 0 && (
-                            <div className="mt-5 space-y-2">
-                                <h2 className="font-medium text-[#0c211c]">Observaciones públicas</h2>
-                                {result.observaciones.map((observacion, index) => (
-                                    <p key={index} className="rounded-md bg-neutral-50 p-3 text-sm text-neutral-700">{observacion}</p>
-                                ))}
-                            </div>
-                        )}
-                    </section>
+                    <div className="space-y-6">
+                        <TrazabilidadSummary trazabilidad={result} />
+                        <TrazabilidadTimeline eventos={result.eventos} />
+                    </div>
                 )}
             </div>
         </PublicLayout>
-    )
-}
-
-function Item({ label, value }: { label: string; value: string }) {
-    return (
-        <div>
-            <dt className="text-sm font-medium text-neutral-500">{label}</dt>
-            <dd className="mt-1 text-neutral-950">{value}</dd>
-        </div>
     )
 }

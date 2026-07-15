@@ -9,7 +9,9 @@ Para una instalación nueva, el orden vigente es:
 1. `supabase/manual_sql/initial_schema.sql` — esquema base.
 2. `supabase/manual_sql/hito_6_public_intake.sql` — ingreso y trazabilidad públicos.
 3. `supabase/manual_sql/hito_6_edge_functions_hardening.sql` — controles y soporte operativo de Edge Functions.
-4. `supabase/manual_sql/promote_admin.sql` — solo cuando corresponda promover un usuario autorizado; no es parte del aprovisionamiento general.
+4. `supabase/manual_sql/hito_7_fix_finalize_public_intake.sql` — corrige la referencia ambigua de `estado` detectada en la finalización del ingreso público.
+5. `supabase/manual_sql/hito_7_trazabilidad_publica_historial.sql` — agrega la línea de tiempo pública de estados y observaciones con fecha.
+6. `supabase/manual_sql/promote_admin.sql` — solo cuando corresponda promover un usuario autorizado; no es parte del aprovisionamiento general.
 
 `supabase/migrations_legacy/` contiene antecedentes históricos y no debe aplicarse en instalaciones nuevas salvo una instrucción técnica aprobada. `supabase/migrations/` se conserva vacía por compatibilidad con herramientas, pero no es la ruta vigente para cambios nuevos.
 

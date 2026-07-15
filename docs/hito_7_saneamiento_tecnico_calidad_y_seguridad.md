@@ -291,3 +291,9 @@ Se implementaron las puertas de calidad, pruebas unitarias y E2E, cobertura, con
 - `.env` fue retirado del índice sin eliminar la copia local; la clasificación no sensible está en `docs/seguridad/registro_rotacion_credenciales.md`.
 
 La ejecución real de `.github/workflows/quality.yml` y la protección de rama quedan pendientes de crear o actualizar el pull request en el proveedor Git. No se ejecutaron scripts SQL, despliegues ni cambios de infraestructura durante esta implementación.
+
+### Corrección operativa posterior
+
+Durante la prueba del flujo desplegado se diagnosticó el error PostgreSQL `42702` en `finalize_public_intake`: la referencia `estado` era ambigua entre la columna de `solicitudes` y el parámetro de salida de la función. Se creó `supabase/manual_sql/hito_7_fix_finalize_public_intake.sql`, que califica las columnas mediante el alias `inserted`, conserva la firma y permisos de la RPC e incluye validación transaccional. Su ejecución remota requiere autorización separada y registro en la bitácora de base de datos.
+
+También se amplió la trazabilidad pública para mostrar una línea de tiempo cronológica con recepción, cambios de estado y observaciones públicas, cada evento con fecha y transición cuando corresponda. El contrato se implementa mediante `buscar_trazabilidad_publica_v2`, filtra estrictamente la visibilidad pública y mantiene ocultos eventos internos, documentos y datos personales. La ampliación quedó respaldada por 42 pruebas Vitest y 10 escenarios Playwright en escritorio y móvil.

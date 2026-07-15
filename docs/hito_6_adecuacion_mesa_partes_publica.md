@@ -36,7 +36,7 @@ Para que el hito sea implementable sin decisiones funcionales abiertas, se adopt
 4. En los trámites con pago, el archivo de acreditación seguirá siendo obligatorio para Boleta, Factura al contado y Factura al crédito. La opción de facturación no elimina la obligación de adjuntar sustento.
 5. Los dos consentimientos serán obligatorios y versionados. El texto definitivo deberá ser entregado por la institución antes de la prueba de aceptación.
 6. Se utilizará Cloudflare Turnstile, consistente con la referencia visual. El envío del correo de recepción se realizará llamando un webhook de n8n desde backend; la URL del webhook se configurará como secreto y nunca llegará al navegador.
-7. La trazabilidad pública se consultará en `/trazabilidad` ingresando el código y mostrará únicamente código, sección, trámite, fecha de ingreso, estado y observaciones públicas cuando existan.
+7. La trazabilidad pública se consultará en `/trazabilidad` ingresando el código y mostrará código, sección, trámite, fecha de ingreso, estado actual y una línea de tiempo cronológica de eventos públicos: recepción, cambios de estado, subsanaciones y observaciones públicas, todos con fecha. Nunca mostrará eventos internos.
 8. Se exigirá al menos un sustento documental: archivo cargado o enlace externo de Drive. Los archivos cargados aceptarán PDF, DOC, DOCX, JPG, JPEG y PNG, con máximo de 20 MB por archivo, alineado al bucket actual. El enlace de Drive se usará cuando el documento sea más pesado o no convenga cargarlo al bucket.
 9. Persona jurídica utilizará razón social, RUC, representante legal, cargo del representante, celular, correo y domicilio. Representante legal y cargo serán obligatorios para mejorar la revisión administrativa.
 10. Solo el rol `administrador` podrá ver los registros públicos finalizados, cambiar estado y registrar observaciones para trazabilidad. El rol `interno` no participa en la gestión del Hito 6.
@@ -149,7 +149,7 @@ No se debe mostrar un monto fijo. Se debe mostrar el enlace al tarifario corresp
 ### Seguimiento público
 
 - La interfaz pública `/trazabilidad` debe solicitar el código único del documento.
-- El resultado solo puede mostrar información pública mínima: código, sección, trámite, fecha de ingreso, estado y observaciones públicas.
+- El resultado muestra información pública mínima y su historial: código, sección, trámite, fecha de ingreso, estado actual y eventos públicos con tipo, descripción, transición de estado y fecha.
 - El código no permite adjuntar documentos, cambiar estados, editar datos originales ni acceder a archivos.
 - No habrá subsanación pública en este hito.
 
@@ -158,7 +158,7 @@ No se debe mostrar un monto fijo. Se debe mostrar el enlace al tarifario corresp
 - El rol `administrador` puede ver todos los registros finalizados de Mesa de Partes.
 - El rol `administrador` puede abrir el detalle administrativo completo, revisar documentos, revisar pagos, cambiar estado y registrar observaciones.
 - Cada observación administrativa debe marcarse como `publica` o `interna`.
-- Solo las observaciones marcadas como `publica` aparecen en `/trazabilidad`.
+- Solo las observaciones y eventos marcados con visibilidad `publica` aparecen en `/trazabilidad`.
 - Todo cambio de estado y toda observación del administrador debe quedar en historial con fecha, usuario y visibilidad.
 
 ---
@@ -331,7 +331,7 @@ Campos obligatorios para n8n: `event_type`, `version`, `codigo`, `fecha_recepcio
 1. El solicitante abre la interfaz pública de seguimiento.
 2. Ingresa el código único del documento en `/trazabilidad`.
 3. El backend valida formato, rate limit y existencia del código.
-4. El sistema muestra solo el estado público y observaciones públicas, sin documentos ni datos personales.
+4. El sistema muestra el estado actual y la línea de tiempo de eventos públicos ordenada por fecha, sin documentos ni datos personales.
 5. Si la solicitud está observada, la pantalla solo informa la observación; no permite subsanar ni adjuntar archivos.
 
 ### Flujo administrador
@@ -459,10 +459,11 @@ Rollback: ocultar las rutas públicas mediante configuración, desactivar Edge F
 
 - La observación pública se muestra y la interna permanece oculta.
 - Una observación pública creada por admin aparece en `/trazabilidad`.
+- La recepción inicial, cada cambio de estado y cada observación pública aparecen como eventos separados con fecha.
 - La pantalla de seguimiento no permite adjuntar documentos.
 - La pantalla de seguimiento no permite editar datos ni cambiar estados.
 - Una observación interna nunca aparece en la consulta pública.
-- Un cambio de estado hecho por admin se refleja en `/trazabilidad`.
+- Un cambio de estado hecho por admin se agrega a la línea de tiempo mostrando el estado anterior, el nuevo estado y la fecha.
 
 ### Integraciones
 

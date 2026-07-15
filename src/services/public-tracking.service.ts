@@ -1,4 +1,4 @@
-import type { TrazabilidadPublica } from '@/features/mesa-partes-publica/types/mesa-partes-publica.types'
+import type { TrazabilidadPublica } from '@/features/mesa-partes-publica/types/tracking.types'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL ?? ''
 const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY ?? ''

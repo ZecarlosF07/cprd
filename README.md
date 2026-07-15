@@ -39,7 +39,7 @@ Todas las variables `VITE_*` son públicas porque se incluyen en el navegador. L
 ## Rutas principales
 
 - `/mesa-de-partes`: ingreso público sin autenticación.
-- `/trazabilidad`: consulta pública por código.
+- `/trazabilidad`: consulta pública por código con estado actual y línea de tiempo de eventos públicos.
 - `/login` y `/registro`: redirigen al ingreso público.
 - Ruta indicada por `VITE_ADMIN_LOGIN_PATH`: autenticación administrativa.
 - `/dashboard`, `/interno` y `/admin`: áreas protegidas por perfil y rol.

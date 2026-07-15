@@ -77,12 +77,3 @@ export interface PublicIntakeResult {
     solicitudId: string
     estado: string
 }
-
-export interface TrazabilidadPublica {
-    codigo: string
-    seccion: string
-    tramite: string
-    fechaIngreso: string
-    estado: string
-    observaciones: string[]
-}
